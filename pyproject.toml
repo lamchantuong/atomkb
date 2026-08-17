@@ -1,0 +1,17 @@
+[project]
+name = "atomkb"
+version = "0.1.0"
+description = "atomkb — Knowledge Engine CLI (knowledge-base)"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+knowledge-base = "knowledge_base_cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["knowledge_base_cli", "knowledge_base_lib"]
+package-dir = {"" = "tools"}

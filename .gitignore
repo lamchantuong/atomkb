@@ -1,0 +1,10 @@
+# Optional local scratch (corpus lives outside this repo)
+knowledge/
+
+# Local artifacts
+.cache/
+
+# Python
+*.egg-info/
+**/__pycache__/
+*.py[cod]
