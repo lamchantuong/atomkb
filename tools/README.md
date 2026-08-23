@@ -16,6 +16,6 @@ knowledge-base show --id <domain>.topic.note --domain <domain>
 knowledge-base feedback --domain <domain> --type gap --title "missing X" --body "…"
 ```
 
-Maintainer: `python tools/knowledge_base_cli.py …` — thêm `catalog` / `lint` / `dup`.
+Maintainer: `python tools/knowledge_base_cli.py …` — thêm `catalog` / `lint` / `dup` / `init`.
 
 Modules: `knowledge_base_cli.py`, `knowledge_base_lib.py` (stdlib, Python 3.10+).

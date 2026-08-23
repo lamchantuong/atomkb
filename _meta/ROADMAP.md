@@ -5,7 +5,7 @@ Cập nhật: 2026-08-18
 ## Định hướng (map rule)
 
 - Router: [`../AGENTS.md`](../AGENTS.md).
-- Rule KB gốc: [`RULE_KB_BUILD.md`](RULE_KB_BUILD.md) → khi ship: dùng làm nguồn cho `AGENTS.md` của repo KB đích.
+- Rule KB gốc: [`RULE_KB_BUILD.md`](RULE_KB_BUILD.md) → ship stub corpus: [`AGENTS_CORPUS.template.md`](AGENTS_CORPUS.template.md) qua `knowledge-base init`.
 - Corpus: **ngoài** engine — root qua `KB_ROOT` / `KNOWLEDGE_BASE_ROOT` hoặc `--root` (vd. `C:\TuongLC\AI_workspace\knowledge`). Không nested git trong engine.
 - Skills: **ngoài** engine — `C:\TuongLC\Project\myskills` (`npx skills add`). Không `_meta/skills/` trong engine.
 - Rationale: [`KB_BUILD_RATIONALE.md`](KB_BUILD_RATIONALE.md).
@@ -24,7 +24,7 @@ Cập nhật: 2026-08-18
 
 - Spec: [`TOOLS.md`](TOOLS.md). Entry: `knowledge-base` (`pip install -e .`); maintainer: `python tools/knowledge_base_cli.py`.
 - Consumer: `domains` / `intro` / `route` / `pack` / `show` / `feedback`.
-- Maintainer: `catalog` / `lint` / `dup`.
+- Maintainer: `catalog` / `lint` / `dup` / `init`.
 - Index theo frontmatter (`id`, `topic`, `description`) — keyword match, chưa embedding / MCP.
 - Skill client: repo **myskills** (`kb-consumer`, `kb-maintainer`, `kb-migrate`, …) — không trong engine.
 - Engine ↔ corpus ↔ skill tách repo; CLI bắt buộc có root (env hoặc `--root`).

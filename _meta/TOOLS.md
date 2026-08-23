@@ -32,7 +32,7 @@ set KB_ROOT=C:\TuongLC\AI_workspace\knowledge
 | Mặt | Lệnh | Ai dùng |
 |-----|------|---------|
 | **Consumer** | `domains`, `intro`, `route`, `pack`, `show`, `feedback` | Agent project khác (skill `kb-consumer` trong myskills) |
-| **Maintainer** | `catalog`, `lint`, `dup` (+ `--root` / `--paths` / `--compare-spec`) | Người/agent sửa KB (skill `kb-maintainer` trên corpus) |
+| **Maintainer** | `catalog`, `lint`, `dup`, `init` (+ `--root` / `--paths` / `--compare-spec`) | Người/agent sửa KB (skill `kb-maintainer` trên corpus) |
 
 Consumer: `route` / `pack` / `show` **không** in filesystem `path`. Client **không** sửa note — chỉ `feedback`.
 
@@ -73,6 +73,7 @@ Maintainer: `lint` / `catalog` / `dup` / triage `_feedback/` → sửa note (tro
 | `catalog` | Scan note → JSON (có path; maintainer) |
 | `lint` | Frontmatter, id trùng, topic≠folder, link trong intro, thiếu intro / leftover `index.md` |
 | `dup` | Gợi ý trùng title/description trước khi tạo note |
+| `init` | Ghi `AGENTS.md` corpus từ template engine; optional `--readme` |
 
 ### Consumer — `domains` / `intro` / `route` / `pack` / `show` / `feedback`
 
@@ -93,14 +94,20 @@ Task end-to-end: ưu tiên note `topic: workflows` / id `*.workflow.*`; sau `rou
 
 `feedback` `--type`: `wrong` | `gap` | `stale` | `unclear`.
 
-### Maintainer — `catalog` / `lint` / `dup`
+### Maintainer — `catalog` / `lint` / `dup` / `init`
 
 ```bash
 knowledge-base catalog --domain <domain>
 knowledge-base catalog --domain <domain> -o .cache/kb-catalog.json
 knowledge-base lint --domain <domain>
 knowledge-base dup --title "Short title" --description "khi nào dùng" --domain <domain>
+knowledge-base --root . init                    # AGENTS.md stub (cwd = kb-root)
+knowledge-base --root . init --check            # drift check; exit 1 if stale
+knowledge-base --root . init --force            # refresh stub from engine template
+knowledge-base --root . init --readme           # + README.md cho người (optional)
 ```
+
+Template nguồn: `_meta/AGENTS_CORPUS.template.md` (và `README_CORPUS.template.md` khi `--readme`). Skill cài riêng: `npx skills add … --skill kb-maintainer` — không gộp vào `init`.
 
 `lint`: exit ≠ 0 nếu lỗi (warning không fail trừ `--strict`). Cảnh báo thiếu `intro.md`, leftover `index.md`; **không** bắt mọi note phải được liệt kê trong intro.
 

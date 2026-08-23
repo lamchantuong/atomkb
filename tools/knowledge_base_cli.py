@@ -13,6 +13,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from knowledge_base_lib import (
     FEEDBACK_TYPES,
+    INIT_CORPUS_FILES,
+    INIT_README_FILES,
     REQUIRED_FIELDS,
     SKIP_NAMES,
     build_catalog,
@@ -23,6 +25,7 @@ from knowledge_base_lib import (
     estimate_tokens,
     extract_note_links,
     feedback_dir,
+    init_corpus_file,
     is_topic_dir_name,
     list_domains,
     load_note,
@@ -366,6 +369,45 @@ def cmd_domains(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_init(args: argparse.Namespace) -> int:
+    root: Path = args.root
+    targets = list(INIT_CORPUS_FILES)
+    if args.readme:
+        targets.extend(INIT_README_FILES)
+
+    exit_code = 0
+    for dest_name, template_name in targets:
+        try:
+            action = init_corpus_file(
+                root,
+                dest_name,
+                template_name,
+                force=args.force,
+                check=args.check,
+            )
+        except FileNotFoundError as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 2
+
+        rel = dest_name
+        if action == "created":
+            print(f"Wrote {rel}", file=sys.stderr)
+        elif action == "updated":
+            print(f"Updated {rel}", file=sys.stderr)
+        elif action == "unchanged":
+            print(f"OK: {rel} matches template", file=sys.stderr)
+        elif action == "skipped":
+            print(f"SKIP: {rel} exists (use --force to overwrite)", file=sys.stderr)
+        elif action == "missing":
+            print(f"MISSING: {rel} (run init without --check to create)", file=sys.stderr)
+            exit_code = 1
+        elif action == "differs":
+            print(f"DIFF: {rel} differs from engine template (use --force to update)", file=sys.stderr)
+            exit_code = 1
+
+    return exit_code
+
+
 def cmd_intro(args: argparse.Namespace) -> int:
     topic = (args.topic or "").strip()
     if topic:
@@ -449,6 +491,24 @@ def build_parser() -> argparse.ArgumentParser:
     d.add_argument("--domain", default=None)
     d.add_argument("--limit", type=int, default=8)
     d.set_defaults(func=cmd_dup)
+
+    init = sub.add_parser("init", help="Ship corpus AGENTS.md (and optional README) from engine template")
+    init.add_argument(
+        "--force",
+        action="store_true",
+        help="overwrite existing files",
+    )
+    init.add_argument(
+        "--check",
+        action="store_true",
+        help="report drift; exit 1 if update needed",
+    )
+    init.add_argument(
+        "--readme",
+        action="store_true",
+        help="also write README.md for humans (AGENTS.md is enough for agents)",
+    )
+    init.set_defaults(func=cmd_init)
 
     return p
 

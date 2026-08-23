@@ -307,3 +307,57 @@ def unique_feedback_path(feedback_root: Path, slug: str) -> Path:
         if not candidate.exists():
             return candidate
         n += 1
+
+
+def engine_root() -> Path:
+    """Repo engine root (parent of tools/). Editable install: sibling of _meta/."""
+    return Path(__file__).resolve().parent.parent
+
+
+def read_engine_template(template_name: str) -> str:
+    """Load _meta/<template_name> from the engine repo."""
+    path = engine_root() / "_meta" / template_name
+    if not path.is_file():
+        raise FileNotFoundError(f"missing engine template: {path}")
+    text = path.read_text(encoding="utf-8")
+    if not text.endswith("\n"):
+        text += "\n"
+    return text
+
+
+def init_corpus_file(
+    root: Path,
+    dest_name: str,
+    template_name: str,
+    *,
+    force: bool = False,
+    check: bool = False,
+) -> str:
+    """Write or check one corpus bootstrap file. Returns action token."""
+    dest = root / dest_name
+    new_text = read_engine_template(template_name)
+    if dest.is_file():
+        old_text = dest.read_text(encoding="utf-8")
+        if not old_text.endswith("\n"):
+            old_text += "\n"
+        if old_text == new_text:
+            return "unchanged"
+        if check:
+            return "differs"
+        if not force:
+            return "skipped"
+        dest.write_text(new_text, encoding="utf-8")
+        return "updated"
+    if check:
+        return "missing"
+    dest.write_text(new_text, encoding="utf-8")
+    return "created"
+
+
+# dest filename → _meta template (used by knowledge-base init)
+INIT_CORPUS_FILES: tuple[tuple[str, str], ...] = (
+    ("AGENTS.md", "AGENTS_CORPUS.template.md"),
+)
+INIT_README_FILES: tuple[tuple[str, str], ...] = (
+    ("README.md", "README_CORPUS.template.md"),
+)

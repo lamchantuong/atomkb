@@ -1,6 +1,6 @@
 # AGENTS.md
 
-> **Source rule:** `RULE_KB_BUILD.md` — bản gốc rule xây / sửa knowledge base. Khi ship vào KB đích: copy nội dung phù hợp vào `AGENTS.md` của repo KB đó.
+> **Source rule:** `RULE_KB_BUILD.md` — bản gốc rule xây / sửa knowledge base. Ship stub corpus: `knowledge-base --root <kb-root> init` (template `_meta/AGENTS_CORPUS.template.md`).
 > **Scope:** Quy tắc xây / sửa knowledge base (atomic notes). Không gồm task Kanban hay throttling — xem file rule độc lập trong `_meta/`.
 > Corpus nằm **ngoài** repo engine — CLI trỏ bằng `--root` / `KB_ROOT`. Sửa rule tại file này (engine); agent sửa note làm việc trong repo KB.
 
