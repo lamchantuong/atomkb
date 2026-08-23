@@ -10,8 +10,7 @@ Repo này là **Knowledge Engine** (CLI + rule). Cây note nằm **ngoài** repo
 
 | File | Khi đọc |
 |------|---------|
-| [`_meta/RULE_KB_BUILD.md`](_meta/RULE_KB_BUILD.md) | Tạo/sửa note trong KB root ngoài engine, thêm topic/`intro.md`, xử lý `_issues/` / `_feedback/` |
-| [`_meta/AGENTS_CORPUS.template.md`](_meta/AGENTS_CORPUS.template.md) | Stub `AGENTS.md` cho repo corpus — ship bằng `knowledge-base --root <kb-root> init` |
+| [`_meta/RULE_KB_BUILD.md`](_meta/RULE_KB_BUILD.md) | Tạo/sửa note trong KB root ngoài engine, thêm topic/`intro.md`, xử lý `_issues/` / `_feedback/` — SoT; ship đầy đủ sang corpus qua `knowledge-base --root <kb-root> init` |
 | [`_meta/RULE_RESOURCE_CONTROL.md`](_meta/RULE_RESOURCE_CONTROL.md) | Bulk edit, migrate nhiều file, hoặc cần throttling |
 | [`_meta/RULE_GIT.md`](_meta/RULE_GIT.md) | Theo dõi/commit thay đổi note trong **repo KB** (git riêng) |
 | [`_meta/TOOLS.md`](_meta/TOOLS.md) | CLI `knowledge-base` (`pip install -e .`): consumer `route`/`pack`/`show`/`feedback`; maintainer `catalog`/`lint`/`dup`/`init` |

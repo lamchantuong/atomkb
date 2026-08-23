@@ -73,7 +73,7 @@ Maintainer: `lint` / `catalog` / `dup` / triage `_feedback/` → sửa note (tro
 | `catalog` | Scan note → JSON (có path; maintainer) |
 | `lint` | Frontmatter, id trùng, topic≠folder, link trong intro, thiếu intro / leftover `index.md` |
 | `dup` | Gợi ý trùng title/description trước khi tạo note |
-| `init` | Ghi `AGENTS.md` corpus từ template engine; optional `--readme` |
+| `init` | Ghi `AGENTS.md` corpus từ `RULE_KB_BUILD.md` (đầy đủ); optional `--readme` |
 
 ### Consumer — `domains` / `intro` / `route` / `pack` / `show` / `feedback`
 
@@ -101,13 +101,13 @@ knowledge-base catalog --domain <domain>
 knowledge-base catalog --domain <domain> -o .cache/kb-catalog.json
 knowledge-base lint --domain <domain>
 knowledge-base dup --title "Short title" --description "khi nào dùng" --domain <domain>
-knowledge-base --root . init                    # AGENTS.md stub (cwd = kb-root)
+knowledge-base --root . init                    # AGENTS.md = full RULE_KB_BUILD (cwd = kb-root)
 knowledge-base --root . init --check            # drift check; exit 1 if stale
-knowledge-base --root . init --force            # refresh stub from engine template
+knowledge-base --root . init --force            # refresh from engine RULE_KB_BUILD
 knowledge-base --root . init --readme           # + README.md cho người (optional)
 ```
 
-Template nguồn: `_meta/AGENTS_CORPUS.template.md` (và `README_CORPUS.template.md` khi `--readme`). Skill cài riêng: `npx skills add … --skill kb-maintainer` — không gộp vào `init`.
+Nguồn: `_meta/RULE_KB_BUILD.md` (header/optional links chỉnh cho corpus). Optional README: `README_CORPUS.template.md`. Skill cài riêng: `npx skills add … --skill kb-maintainer` — không gộp vào `init`.
 
 `lint`: exit ≠ 0 nếu lỗi (warning không fail trừ `--strict`). Cảnh báo thiếu `intro.md`, leftover `index.md`; **không** bắt mọi note phải được liệt kê trong intro.
 

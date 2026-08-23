@@ -492,7 +492,7 @@ def build_parser() -> argparse.ArgumentParser:
     d.add_argument("--limit", type=int, default=8)
     d.set_defaults(func=cmd_dup)
 
-    init = sub.add_parser("init", help="Ship corpus AGENTS.md (and optional README) from engine template")
+    init = sub.add_parser("init", help="Ship full RULE_KB_BUILD as corpus AGENTS.md (optional README)")
     init.add_argument(
         "--force",
         action="store_true",

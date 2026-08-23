@@ -325,6 +325,60 @@ def read_engine_template(template_name: str) -> str:
     return text
 
 
+_CORPUS_AGENTS_HEADER = """# AGENTS.md
+
+> **Corpus rule** — bản đầy đủ ship từ engine `_meta/RULE_KB_BUILD.md`.
+> Refresh: `knowledge-base --root . init --force`. Sửa rule gốc ở **engine**; đừng coi edit file này là SoT.
+> **Scope:** Quy tắc xây / sửa knowledge base (atomic notes). Không gồm task Kanban hay throttling — xem rule optional ở repo engine `_meta/`.
+> CLI: `--root` / `KB_ROOT` / `KNOWLEDGE_BASE_ROOT` trỏ vào **repo này** (kb-root).
+
+---
+"""
+
+_CORPUS_OPTIONAL_RULES = """## Optional rules
+
+Các file sau nằm trong repo **engine** `_meta/` (không có trong corpus). Mở engine khi cần bulk/throttle, git corpus, tra CLI, hoặc rationale:
+
+| Rule | Khi dùng |
+|------|----------|
+| `RULE_RESOURCE_CONTROL.md` | Bulk edit, hạn mức API |
+| `RULE_GIT.md` | Theo dõi sửa note bằng git (không tự commit mặc định) |
+| `TOOLS.md` | Tra / gói note: `knowledge-base domains\\|intro\\|route\\|pack\\|show\\|feedback` (+ maintainer `lint`/`dup`/`catalog`/`init`) |
+
+Skills client (myskills): `kb-consumer` / `kb-maintainer` / `kb-migrate` — cài bằng `npx skills`. Queue công việc: `task-kanban` (stopgap) hoặc Task-engine (dự kiến) — **không** rule engine.
+
+Lý do thiết kế: engine `_meta/KB_BUILD_RATIONALE.md`.
+
+---
+"""
+
+
+def build_corpus_agents_md() -> str:
+    """Full RULE_KB_BUILD adapted as corpus AGENTS.md (header + optional links)."""
+    raw = read_engine_template("RULE_KB_BUILD.md")
+    # Drop engine title + blockquote; keep from ## Goal onward
+    marker = "## Goal"
+    idx = raw.find(marker)
+    if idx < 0:
+        raise ValueError("RULE_KB_BUILD.md missing ## Goal — cannot ship corpus AGENTS.md")
+    body = raw[idx:]
+    body = body.replace(
+        "├── AGENTS.md              ← copy/tóm tắt từ RULE_KB_BUILD khi ship",
+        "├── AGENTS.md              ← full RULE_KB_BUILD via knowledge-base init",
+    )
+    opt = body.find("## Optional rules")
+    if opt < 0:
+        raise ValueError("RULE_KB_BUILD.md missing ## Optional rules")
+    checklist = body.find("## Checklist", opt)
+    if checklist < 0:
+        raise ValueError("RULE_KB_BUILD.md missing ## Checklist")
+    body = body[:opt] + _CORPUS_OPTIONAL_RULES + "\n" + body[checklist:]
+    text = _CORPUS_AGENTS_HEADER + "\n" + body
+    if not text.endswith("\n"):
+        text += "\n"
+    return text
+
+
 def init_corpus_file(
     root: Path,
     dest_name: str,
@@ -335,7 +389,10 @@ def init_corpus_file(
 ) -> str:
     """Write or check one corpus bootstrap file. Returns action token."""
     dest = root / dest_name
-    new_text = read_engine_template(template_name)
+    if template_name == "RULE_KB_BUILD.md":
+        new_text = build_corpus_agents_md()
+    else:
+        new_text = read_engine_template(template_name)
     if dest.is_file():
         old_text = dest.read_text(encoding="utf-8")
         if not old_text.endswith("\n"):
@@ -356,7 +413,7 @@ def init_corpus_file(
 
 # dest filename → _meta template (used by knowledge-base init)
 INIT_CORPUS_FILES: tuple[tuple[str, str], ...] = (
-    ("AGENTS.md", "AGENTS_CORPUS.template.md"),
+    ("AGENTS.md", "RULE_KB_BUILD.md"),
 )
 INIT_README_FILES: tuple[tuple[str, str], ...] = (
     ("README.md", "README_CORPUS.template.md"),

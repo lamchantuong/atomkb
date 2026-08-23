@@ -10,8 +10,8 @@ Cập nhật: 2026-08-18
 
 | File | Vai trò |
 |------|---------|
-| [`RULE_KB_BUILD.md`](RULE_KB_BUILD.md) | **Bản gốc** rule trong repo engine; ship stub → `knowledge-base --root <kb> init` |
-| Repo KB (ngoài engine) | Corpus + `AGENTS.md` mỏng; git riêng; CLI trỏ bằng `KB_ROOT` / `--root` |
+| [`RULE_KB_BUILD.md`](RULE_KB_BUILD.md) | **Bản gốc** rule trong repo engine; ship đầy đủ → `knowledge-base --root <kb> init` |
+| Repo KB (ngoài engine) | Corpus + `AGENTS.md` đầy đủ (ship từ `RULE_KB_BUILD`); git riêng; CLI trỏ bằng `KB_ROOT` / `--root` |
 | `<domain>/AGENTS.md` | Chỉ khi cần override domain (mặc định: không có) |
 | Repo skills (`myskills`) | Playbook agent (`npx skills`); **không** nhân bản rule dài — pointer về `_meta/` |
 

@@ -1,6 +1,6 @@
 # Knowledge corpus
 
-Cây note atomic cho Knowledge Engine. Rule cho agent: [AGENTS.md](AGENTS.md).
+Cây note atomic cho Knowledge Engine. Rule cho agent: [AGENTS.md](AGENTS.md) (bản đầy đủ ship từ engine `RULE_KB_BUILD`).
 
 ## Setup
 

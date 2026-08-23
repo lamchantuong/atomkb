@@ -3,6 +3,7 @@ knowledge/
 
 # Local artifacts
 .cache/
+.cursor/
 
 # Python
 *.egg-info/
