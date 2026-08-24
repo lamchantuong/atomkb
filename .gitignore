@@ -4,6 +4,7 @@ knowledge/
 # Local artifacts
 .cache/
 .cursor/
+.agents/
 
 # Python
 *.egg-info/

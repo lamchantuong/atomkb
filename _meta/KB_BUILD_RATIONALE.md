@@ -28,6 +28,7 @@ Theo [agents.md](https://agents.md/). Repo engine dùng `AGENTS.md` mỏng ở r
 | Inbox triage | `<domain>/_issues/` | Prefix `_` = không phải topic. Một chỗ cho conflict/gap/stale/unclear khi nạp KB; không thư mục `conflict/` riêng (quá hẹp). Vé pointer + claim, không bản sao note. |
 | AGENTS theo domain | Không (một `AGENTS` ở root cây KB) | Tránh lệch bản giữa domain; override domain chỉ khi thật sự lệch rule. |
 | Engine vs corpus vs skill | Engine = CLI + rule; corpus = note; skill = myskills | Tránh nested git; skill không trong `_meta/`; nhiều KB / máy chỉ đổi `KB_ROOT`. |
+| Session notes trong repo engine | Không commit; `.agents/` local-only | Quyết định bền vững nên ghi vào rationale/rule; chat-minutes hữu ích để xem lại ngắn hạn nhưng dài dòng và không nên thành lịch sử chuẩn của repo. |
 | Optional resource / git | Rule `_meta/`, không skill riêng | Quá mỏng / trùng user-rule commit; disclosed từ `kb-maintainer` / `kb-migrate`. |
 | `00_ROUTE` / inventory markdown | Không | Topic/`intro.md` định hướng; `route`/`dup`/`catalog` là nguồn tìm note — tránh bảng note trong md (outdate, tốn token). |
 | `when` → `description` | Có | Cùng convention skill. |
@@ -40,4 +41,4 @@ Theo [agents.md](https://agents.md/). Repo engine dùng `AGENTS.md` mỏng ở r
 
 ## Frontmatter
 
-Giữ `derivation` (cách hình thành) + `status` (`draft` \| `tested` \| `verified`) cho tin cậy; `id` / `topic` / `description` cho tool. **Bỏ `confidence`** — trùng trục với `status` và thực tế luôn gắn “Cao”. Bỏ `Applied` khỏi enum status — “đã dùng trong task” không phải mức kiểm chứng.
+Giữ `derivation` (cách hình thành) + `status` (`draft` \| `tested` \| `verified`) cho tin cậy; `id` / `topic` / `description` cho tool. **Bỏ `confidence`** — agent không truy cập internal model confidence, nên field này chỉ thành proxy tự gán, khó hiệu chuẩn và dễ tạo cảm giác chính xác giả. Với bài toán bảo trì KB, nên ưu tiên tín hiệu dựa trên bằng chứng như `status`, `derivation`, `_feedback` / `_issues`, hoặc một field vận hành riêng nếu sau này thật sự cần. Bỏ `Applied` khỏi enum status — “đã dùng trong task” không phải mức kiểm chứng.
